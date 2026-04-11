@@ -25,12 +25,12 @@ function InteractiveHeaderBar() {
                     }   
                         `}>
                     <Link href='/auth/login'
-                        className="w-full py-2 bg-white/20 rounded-xl text-sm lg:text-base text-center"
+                        className="w-full py-2 bg-white rounded-xl text-sm lg:text-base text-center"
                         onClick={() => {handleLogout()}}>
                         Salir
                     </Link>
                     <Link href='/options'
-                        className="w-full py-2 bg-white/20 rounded-xl text-sm lg:text-base text-center">
+                        className="w-full py-2 bg-white rounded-xl text-sm lg:text-base text-center">
                         Opciones
                     </Link>
                 </aside>

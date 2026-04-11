@@ -5,11 +5,10 @@ import { useRegister } from '@/src/graphql/hooks/useRegister'
 import { registerForm } from '@/src/app/auth/types/types'
 
 function RegisterForm() {
-    const [form, setForm] = useState<registerForm | null>(null)
     const [error, setError] = useState<string | null>(null)
     const { handleRegister, loading } = useRegister()
 
-    const saveForm = (e: React.FormEvent<HTMLFormElement>) => {
+    const saveForm = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const password: string = e.currentTarget.password.value
         const verifyPassword: string = e.currentTarget.verifyPassword.value
@@ -25,26 +24,17 @@ function RegisterForm() {
             gender: e.currentTarget.gender.value,
             password,
         }
-        setForm(newForm)
-    }
-
-    const handleSubmit = async () => {
-        if (form) {
-            try {
-                await handleRegister(form)
-            } catch (err: any) {
-                if (err.graphQLErrors) {
-                    const messages = err.graphQLErrors.map((e: any) => e.message).join(', ')
-                    setError(messages)
-                } else {
-                    setError('Error al registrar')
-                }
+        
+        try {
+            await handleRegister(newForm)
+        } catch (err: any) {
+            if (err.graphQLErrors) {
+                const messages = err.graphQLErrors.map((e: any) => e.message).join(', ')
+                setError(messages)
+            } else {
+                setError('Error al registrar')
             }
         }
-    }
-
-    if (form) {
-        handleSubmit()
     }
 
     return (
