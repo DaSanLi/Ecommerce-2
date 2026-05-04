@@ -11,7 +11,7 @@ export interface userResponse {
 
 export interface payloadType {
     email: string;
-    token: string;
+    token?: string;
 }
 
 
@@ -19,8 +19,17 @@ export interface RequestWithUser extends Request {
     user?: payloadType;
 }
 
+export interface CookieOptions {
+    httpOnly?: boolean;
+    secure?: boolean;
+    sameSite?: boolean | 'strict' | 'lax' | 'none';
+    maxAge?: number;
+    path?: string;
+    domain?: string;
+}
+
 export interface ResponseWithCookie extends Response {
-    cookie: (name: string, value: string, options?: any) => this;
+    cookie: (name: string, value: string, options?: CookieOptions) => this;
 }
 
 

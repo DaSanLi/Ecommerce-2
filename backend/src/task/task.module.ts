@@ -10,11 +10,11 @@ import { AuthCookiesService } from '../auth/scripts/auth-cookies.service';
   imports: [
     TypeOrmModule.forFeature([Task, User]),
   ],
-  controllers: [],
+  controllers: [] as const,
   providers: [
     TaskService, 
     TaskResolver, 
     AuthCookiesService
-    ],
+    ] as const,
 })
 export class TaskModule {}

@@ -12,7 +12,7 @@ import { Task } from '../task/entities/task.entity';
     TypeOrmModule.forFeature([User, Task]),
     TaskModule
   ],
-  providers: [UsersService, UsersResolver],
-  controllers: [UsersController],
+  providers: [UsersService, UsersResolver] as const,
+  controllers: [UsersController] as const,
 })
 export class UsersModule { }

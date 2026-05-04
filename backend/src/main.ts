@@ -2,11 +2,35 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import cookieParser from 'cookie-parser';
 import { config } from 'dotenv';
+import { ValidationPipe } from '@nestjs/common';
+import helmet from 'helmet';
+import { GlobalExceptionFilter } from './filters/http-exception.filter';
 
 config();
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    // En desarrollo muestra errores más detallados
+    logger: process.env.NODE_ENV === 'production' 
+      ? ['error', 'warn', 'log'] 
+      : ['error', 'warn', 'log', 'debug'],
+  });
+
+  // Helmet para security headers
+  app.use(helmet());
+
+  // ValidationPipe global - valida todos los inputs
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true, // Elimina propiedades no definidas en DTOs
+    forbidNonWhitelisted: true, // Lanza error si hay propiedades extra
+    transform: true, // Transforma payload al tipo del DTO
+    transformOptions: {
+      enableImplicitConversion: true,
+    },
+  }));
+
+  // Registrar filtro global de excepciones
+  app.useGlobalFilters(new GlobalExceptionFilter());
   const port: number = process.env.PORT ? parseInt(process.env.PORT) : 4000
   const corsOrigin = process.env.CORS_ORIGIN || 'http://localhost:3000';
   app.enableCors({

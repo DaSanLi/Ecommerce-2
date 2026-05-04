@@ -18,6 +18,6 @@ import { AuthGuard } from './guard/auth.guard';
     }),
   ],
   providers: [AuthService, AuthResolver, AuthGuard, AuthCookiesService],
-  controllers: []
+  controllers: [] as const,
 })
 export class AuthModule { }

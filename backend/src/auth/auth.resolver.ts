@@ -36,7 +36,7 @@ export class AuthResolver {
 
     @Query(() => VerificationResponse, { description: "Verifica el usuario mediante cookies y renueva el token" })
     async verification(@Context() context: { req: RequestWithUser; res: ResponseWithCookie }): Promise<VerificationResponse> {
-        const cookies = context.req?.cookies;
+        const cookies = context.req?.cookies ?? {} as Record<string, string>;
         return this.authService.verifyAndRefreshToken(cookies, context.res);
     }
 
