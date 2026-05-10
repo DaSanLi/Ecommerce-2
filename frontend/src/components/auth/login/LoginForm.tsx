@@ -5,8 +5,8 @@ import { useLogin } from '@/src/graphql/hooks/useLogin'
 import { loginForm } from '@/src/app/auth/types/types'
 
 function LoginForm() {
-    const [form, setForm] = useState<loginForm | null>(null)
-    const [error, setError] = useState<string | null>(null)
+    const [ form, setForm ] = useState<loginForm | null>(null)
+    const [ error, setError ] = useState<string | null>(null)
     const { handleLogin, loading, error: loginError } = useLogin()
 
     const saveForm = (e: React.FormEvent<HTMLFormElement>) => {
@@ -21,6 +21,7 @@ function LoginForm() {
 
     const handleSubmit = async (formData: loginForm) => {
         setError(null)
+        console.log(formData, "enviando datos de login")
         try {
             await handleLogin(formData)
         } catch (err: any) {

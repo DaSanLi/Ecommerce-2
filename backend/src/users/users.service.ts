@@ -25,6 +25,8 @@ export class UsersService {
 
 
   async createUser(body: CreateUserDto): Promise<User> {
+    console.log("se ejecuta create user")
+
     const passwordHashed = await hashPassword(body.password);
     body.password = passwordHashed;
     

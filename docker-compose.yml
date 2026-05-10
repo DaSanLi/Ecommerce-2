@@ -47,43 +47,43 @@ services:
 
 
 # actualmente no hay soporte para este contenedor 
-#   todo-frontend:
-#     build:
-#       context: ./frontend
-#       dockerfile: Dockerfile.dev
-#     container_name: todo-frontend
-#     restart: always
-#     volumes:
-#       - ./frontend:/app
-#       - /app/node_modules
-#       - next_cache:/app/.next/cache
-#     env_file:
-#       - ./frontend/.env
-#     environment:
-#       - NODE_ENV=development
-#       - HOSTNAME=0.0.0.0
-#       - NODE_OPTIONS=--max-old-space-size=2048
-#       - CHOKIDAR_USEPOLLING=true
-#       - WATCHPACK_POLLING=true
-#       - NEXT_TELEMETRY_DISABLED=1
-#     depends_on:
-#       - todo-backend
-#     ports:
-#       - "3000:3000"
-#     networks:
-#       - todo-network
-#     command: ["npm", "run", "dev:turbo"]
-#     deploy:
-#       resources:
-#         limits:
-#           memory: 4G
+  todo-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: todo-frontend
+    restart: always
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - next_cache:/app/.next/cache
+    env_file:
+      - ./frontend/.env
+    environment:
+      - NODE_ENV=development
+      - HOSTNAME=0.0.0.0
+      - NODE_OPTIONS=--max-old-space-size=2048
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - NEXT_TELEMETRY_DISABLED=1
+    depends_on:
+      - todo-backend
+    ports:
+      - "3000:3000"
+    networks:
+      - todo-network
+    command: ["npm", "run", "dev:turbo"]
+    deploy:
+      resources:
+        limits:
+          memory: 4G
 
-# networks:
-#   todo-network:
-#     driver: bridge
+networks:
+  todo-network:
+    driver: bridge
 
-# volumes:
-#   postgres_data:
-#     driver: local
-#   next_cache:
-#     driver: local
+volumes:
+  postgres_data:
+    driver: local
+  next_cache:
+    driver: local
