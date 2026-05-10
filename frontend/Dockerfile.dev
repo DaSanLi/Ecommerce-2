@@ -1,0 +1,16 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Instalar dependencias primero (cache layer)
+COPY package*.json ./
+RUN npm install
+
+# Copiar el resto del código
+COPY . .
+
+# Exponer el puerto de desarrollo
+EXPOSE 3000
+
+# Arrancar con Turbopack (más rápido y eficiente que webpack)
+CMD ["npm", "run", "dev:turbo"]

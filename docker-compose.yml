@@ -47,25 +47,31 @@ services:
   todo-frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: todo-frontend
     restart: always
     volumes:
       - ./frontend:/app
       - /app/node_modules
-      - /app/.next
+      - next_cache:/app/.next/cache
     env_file:
       - ./frontend/.env
     environment:
       - NODE_ENV=development
       - HOSTNAME=0.0.0.0
+      - NODE_OPTIONS=--max-old-space-size=4096
+      - NEXT_TELEMETRY_DISABLED=1
     depends_on:
       - todo-backend
     ports:
       - "3000:3000"
     networks:
       - todo-network
-    command: ["npm", "run", "dev", "--", "-H", "0.0.0.0"]
+    command: ["npm", "run", "dev:turbo"]
+    deploy:
+      resources:
+        limits:
+          memory: 3G
 
 networks:
   todo-network:
@@ -73,4 +79,6 @@ networks:
 
 volumes:
   postgres_data:
+    driver: local
+  next_cache:
     driver: local
