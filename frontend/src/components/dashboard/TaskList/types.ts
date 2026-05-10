@@ -1,8 +1,10 @@
-import { taskPriority } from '../NewTask/types'
+export type taskStatus = 'pendiente' | 'asignada' | 'realizando' | 'completada'
 
 export interface Task {
-    _id: string;
+    id: string;
     title: string;
     description: string;
-    priority: taskPriority;
+    priority: string;
+    status: taskStatus;
+    orderInStatus: number;
 }

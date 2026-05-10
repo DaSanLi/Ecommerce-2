@@ -1,0 +1,175 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""Para crear una nueva tarea se deben proporcionar todos los campos"""
+input CreateTaskDto {
+  description: String!
+
+  """Orden de la tarea dentro de su estado"""
+  orderInStatus: Int! = 0
+
+  """
+  Solo hay 4 estados para nombrar este campo (bajo, medio, alto, urgente)
+  """
+  priority: String!
+
+  """Estado de la tarea en el tablero Kanban"""
+  status: String! = "pendiente"
+  title: String!
+}
+
+"""
+El campo username y password son obligatorios proporcionarlos para crear un nuevo usuario
+"""
+input CreateUserDto {
+  email: String!
+  fullName: String!
+  gender: String!
+  password: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input LoginDto {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  """Cancela el borrado blando de un usuario"""
+  cancelSoftDelete(id: String!): String!
+
+  """Crea una nueva tarea"""
+  createTask(createTaskDto: CreateTaskDto!): String!
+
+  """Borra un usuario de manera permanente"""
+  hardDeleteUser(id: String!): String!
+
+  """Requiere las credenciales de un usuario registrado y devuelve un token"""
+  login(body: LoginDto!): UserClass!
+
+  """Cierra la sesión del usuario clears la cookie"""
+  logout: String!
+
+  """Mueve una tarea a un nuevo estado y orden"""
+  moveTask(id: String!, moveTaskDto: UpdateTaskDto!): String!
+
+  """Registra un usuario y devuelve un token de acceso"""
+  register(body: CreateUserDto!): UserClass!
+
+  """Eliminar una tarea por el identificador"""
+  removeTask(id: String!): String!
+
+  """Borra un usuario de manera blanda"""
+  softDeleteUSer(id: String!): String!
+
+  """Actualiza una tarea por el identificador de la tarea"""
+  updateTask(id: String!, updateTaskDto: UpdateTaskDto!): String!
+
+  """Actualiza las credenciales de un usuario existente"""
+  updateUser(body: UpdateUserDto!, id: String!): String!
+}
+
+type Query {
+  """Encuentra todas las tareas creadas por el usuario"""
+  findAllTasks: [Task!]!
+
+  """Trae todos los usuarios registrados"""
+  findAllUsers: [User!]!
+
+  """Encuentra una tarea por el identificador de la tarea"""
+  findOneTask(id: String!): Task!
+
+  """Encuentra un usuario por su identificador"""
+  findOneUser(id: String!): User!
+
+  """Obtiene el usuario actualmente autenticado"""
+  me: User!
+
+  """Verifica el usuario mediante cookies y renueva el token"""
+  verification: VerificationResponse!
+}
+
+"""
+Resprenta una tarea del usuario y solo podran acceder usuarios con tokens validos
+"""
+type Task {
+  """Descripción referente a la tarea"""
+  description: String!
+
+  """Identificador unico de la entidad"""
+  id: ID!
+
+  """Orden de la tarea dentro de su estado"""
+  orderInStatus: Int!
+
+  """Prioridad de la tarea (baja, media, alta o urgente)"""
+  priority: String!
+
+  """Estado de la tarea en el tablero Kanban"""
+  status: String!
+
+  """Titulo de la tarea"""
+  title: String!
+}
+
+input UpdateTaskDto {
+  description: String
+
+  """Orden de la tarea dentro de su estado"""
+  orderInStatus: Int = 0
+
+  """
+  Solo hay 4 estados para nombrar este campo (bajo, medio, alto, urgente)
+  """
+  priority: String
+
+  """Estado de la tarea en el tablero Kanban"""
+  status: String = "pendiente"
+  title: String
+}
+
+input UpdateUserDto {
+  email: String
+  fullName: String
+  gender: String
+  password: String
+}
+
+"""Representa un usuario y sus credenciales"""
+type User {
+  """Muestra si el usuario ha sido borrado"""
+  deletedAt: DateTime
+
+  """Nombre de usuario"""
+  email: String!
+
+  """Nombre completo del usuario"""
+  fullName: String!
+
+  """Género"""
+  gender: String!
+
+  """Identificador unico de usuario"""
+  id: ID!
+
+  """Contraseña de usuario"""
+  password: String!
+
+  """Muestra todas las tasks de todos los usuarios creados y sus campos"""
+  tasks: [Task!]
+}
+
+type UserClass {
+  """Email del usuario autenticado"""
+  email: String!
+}
+
+type VerificationResponse {
+  email: String!
+  message: String!
+}

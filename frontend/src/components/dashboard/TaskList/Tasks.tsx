@@ -1,7 +1,7 @@
 'use client'
-import { fetchApi } from "@/src/scripts.ts/scripts"
+import { useDeleteTask } from "@/src/graphql/hooks/useDeleteTask"
 import { Task } from "./types"
-import React from "react"
+import { useState } from "react"
 import NewTask from "../NewTask/NewTask"
 
 interface Props {
@@ -9,9 +9,9 @@ interface Props {
 }
 
 function Tasks({ tasks }: Props) {
-    const [newTaskPanel, setNewTaskPanel] = React.useState<boolean>(false)
-    const [idUpdate, setIdUpdate] = React.useState<string>("")
-    const endPoint: string = 'tasks'
+    const [newTaskPanel, setNewTaskPanel] = useState<boolean>(false)
+    const [idUpdate, setIdUpdate] = useState<string>("")
+    const { handleDeleteTask } = useDeleteTask()
 
     function updateTaskPanel(id: string) {
         setNewTaskPanel(prev => !prev)
@@ -19,26 +19,18 @@ function Tasks({ tasks }: Props) {
     }
 
     async function deleteTask(id: string) {
-        async function sendForm() {
-            const res = await fetchApi(`${endPoint}/${id}`, {
-                headers: { "Content-Type": "application/json" },
-                method: 'DELETE',
-                credentials: 'include'
-            })
-            console.log(res)
-        }
-        sendForm()
+        await handleDeleteTask(id)
     }
 
     return (
         <>
             {newTaskPanel && <NewTask setNewTaskPanel={setNewTaskPanel} requiredOptionalsInputs={false} idUpdate={idUpdate} />}
-            {tasks.length === 0
+            {tasks?.length === 0
                 ? <p>No tienes tareas agregadas.</p>
                 :
-                tasks.map(task => (
+                tasks?.map(task => (
                     <article
-                        key={task._id}
+                        key={task.id}
                         className="flex flex-col gap-3 p-4 rounded-xl
                     bg-(--bg-secondary)
                     border border-(--border-color)
@@ -60,8 +52,7 @@ function Tasks({ tasks }: Props) {
                                 hover:text-(--color-primary)
                                 hover:bg-(--bg-primary)
                                 transition-colors"
-                                    //esta modificacion se realiza dentro de NewTask para reutilizar el mismo componente
-                                    onClick={() => updateTaskPanel(task._id)}
+                                    onClick={() => updateTaskPanel(String(task.id))}
                                 >
                                     ✏️
                                 </button>
@@ -71,7 +62,7 @@ function Tasks({ tasks }: Props) {
                                 hover:text-red-500
                                 hover:bg-(--bg-primary)
                                 transition-colors"
-                                    onClick={() => deleteTask(task._id)}
+                                    onClick={() => deleteTask(String(task.id))}
                                 >
                                     🗑️
                                 </button>

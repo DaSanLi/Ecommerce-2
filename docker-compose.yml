@@ -1,0 +1,89 @@
+services:
+  todo-db:
+    image: postgres:16-alpine
+    container_name: todo-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1601
+      POSTGRES_DB: todo
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - todo-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  todo-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: todo-backend
+    restart: always
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=todo-db
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+    depends_on:
+      todo-db:
+        condition: service_healthy
+    ports:
+      - "4000:4000"
+    networks:
+      - todo-network
+    command: ["npm", "run", "start:dev"]
+
+
+# actualmente no hay soporte para este contenedor 
+#   todo-frontend:
+#     build:
+#       context: ./frontend
+#       dockerfile: Dockerfile.dev
+#     container_name: todo-frontend
+#     restart: always
+#     volumes:
+#       - ./frontend:/app
+#       - /app/node_modules
+#       - next_cache:/app/.next/cache
+#     env_file:
+#       - ./frontend/.env
+#     environment:
+#       - NODE_ENV=development
+#       - HOSTNAME=0.0.0.0
+#       - NODE_OPTIONS=--max-old-space-size=2048
+#       - CHOKIDAR_USEPOLLING=true
+#       - WATCHPACK_POLLING=true
+#       - NEXT_TELEMETRY_DISABLED=1
+#     depends_on:
+#       - todo-backend
+#     ports:
+#       - "3000:3000"
+#     networks:
+#       - todo-network
+#     command: ["npm", "run", "dev:turbo"]
+#     deploy:
+#       resources:
+#         limits:
+#           memory: 4G
+
+# networks:
+#   todo-network:
+#     driver: bridge
+
+# volumes:
+#   postgres_data:
+#     driver: local
+#   next_cache:
+#     driver: local

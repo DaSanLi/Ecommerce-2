@@ -1,5 +1,6 @@
 'use client'
-import { fetchApi } from "@/src/scripts.ts/scripts"
+import { useCreateTask } from "@/src/graphql/hooks/useCreateTask"
+import { useUpdateTask } from "@/src/graphql/hooks/useUpdateTask"
 
 type props = {
     setNewTaskPanel: React.Dispatch<React.SetStateAction<boolean>>
@@ -9,7 +10,8 @@ type props = {
 
 function NewTask({ setNewTaskPanel, requiredOptionalsInputs, idUpdate }: props) {
 
-    const endPoint: string = !idUpdate ? "tasks" : `tasks/${idUpdate}`
+    const { handleCreateTask: createTask } = useCreateTask(() => setNewTaskPanel(prev => !prev))
+    const { handleUpdateTask: updateTask } = useUpdateTask(() => setNewTaskPanel(prev => !prev))
 
     const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -17,14 +19,12 @@ function NewTask({ setNewTaskPanel, requiredOptionalsInputs, idUpdate }: props) 
         const title = formClass.get('title')
         const priority = formClass.get('priority')
         const description = formClass.get('description')
-        const newTask = {title, priority, description}
-        await fetchApi(`${endPoint}`, {
-            method: !idUpdate ? "POST" : "PATCH",
-            headers: { 'Content-Type': 'application/json' },
-            credentials: 'include',
-            body: JSON.stringify(newTask)
-        })
-        setNewTaskPanel(prev => !prev)
+        
+        if (idUpdate) {
+            await updateTask(idUpdate, { title: String(title), priority: String(priority), description: String(description) })
+        } else {
+            await createTask({ title: String(title), priority: String(priority), description: String(description) })
+        }
     }
 
     return (

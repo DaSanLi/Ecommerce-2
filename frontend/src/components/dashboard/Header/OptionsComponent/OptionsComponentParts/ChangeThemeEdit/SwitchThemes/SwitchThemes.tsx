@@ -25,7 +25,7 @@ function SwitchThemes() {
 
     return (
         <form onChange={(e) => saveTheme(e)}>
-            <select name="changeTheme" id="changeTheme" className="bg-(--bg-primary) text-center p-2 rounded-2xl text-(--text-primary)">
+            <select name="changeTheme" id="changeTheme" className="bg-(--bg-primary) text-center p-3 lg:p-4 rounded-2xl text-(--text-primary) text-base lg:text-lg">
                 <option>Elige un tema</option>
                 <option value="light">light</option>
                 <option value="dark">dark</option>

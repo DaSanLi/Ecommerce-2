@@ -1,39 +1,30 @@
-import { fetchApi } from "@/src/scripts.ts/scripts"
+'use client'
+import { useTasks } from "@/src/graphql/hooks/useTasks"
 import NewTaskSection from "../NewTask/NewTaskSection"
-import Tasks from "./Tasks"
-import { cookies } from "next/dist/server/request/cookies";
-import { Task } from "./types";
+import KanbanBoard from "../KanbanBoard/KanbanBoard"
 
-async function TaskList() {
-    const cookieStore = await cookies();
-    const cookieAuth = cookieStore.toString();
-    let tasks:Task[]|null = await fetchApi("tasks", {credentials: 'include', headers: {'Cookie': cookieAuth}});
-    if (!tasks) {
-        tasks = [];
-    }
+interface Props {
+    className?: string
+}
+
+function TaskList({ className = '' }: Props) {
+    const { tasks, loading, error } = useTasks()
+
+    if (loading) return <p>Cargando tareas...</p>
+    if (error) return <p>Error al cargar tareas</p>
+
     return (
         <section
-            className="w-full h-full px-4 py-10 bg-(--bg-primary)"
+            className={`w-full flex flex-1 flex-col gap-1 px-4 py-10 text-base bg-(--bg-primary) border-0 m-0 ${className}`}
             aria-label="Tablero de tareas"
         >
-            <header className="mb-6 flex items-center justify-between">
-                <h1 className="text-(--text-primary)">
+            <header className="mb-6 lg:mb-8 flex items-center justify-between">
+                <h1 className="text-base lg:text-2xl text-(--text-primary)">
                     Tablero de tareas
                 </h1>
-            {/* form para agregar nueva tarea */}
-            <NewTaskSection />
+                <NewTaskSection />
             </header>
-            {/* Grid de tareas */}
-            <div
-                className="grid gap-4
-                grid-cols-1
-                sm:grid-cols-2
-                lg:grid-cols-3
-                xl:grid-cols-4"
-            >
-                {/* Aquí van las cards/tareas */}
-                <Tasks tasks={tasks} />
-            </div>
+            <KanbanBoard tasks={tasks} className="flex-1" />
         </section>
     )
 }

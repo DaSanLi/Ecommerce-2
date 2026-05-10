@@ -1,0 +1,15 @@
+node_modules/
+.npm/
+dist/
+.git/
+.gitignore
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+build/
+coverage/
+*.md
+.DS_Store
+*.tsbuildinfo

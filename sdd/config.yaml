@@ -1,0 +1,15 @@
+stack:
+  frontend:
+    framework: "React"
+    language: "TypeScript"
+  backend:
+    framework: "Node.js"
+    language: "TypeScript"
+  api:
+    type: "GraphQL"
+conventions:
+  specs_dir: "sdd/specs"
+  persistence_dir: "sdd/persistence"
+persistence:
+  type: "json-file"
+  path: "sdd/persistence/storage.json"

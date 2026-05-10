@@ -7,7 +7,7 @@ function NewTaskSection() {
     return (
         <section>
             <button onClick={ () => setNewTaskPanel(prev => !prev) }
-            className="bg-(--color-primary) hover:bg-(--color-primary)/50 text-white font-bold py-2 px-4 rounded">
+            className="bg-(--color-primary) hover:bg-(--color-primary)/50 text-white font-bold py-3 px-6 text-base lg:text-lg lg:py-4 lg:px-8 rounded">
             Agregar tarea</button>
             {newTaskPanel && <NewTask setNewTaskPanel={setNewTaskPanel} requiredOptionalsInputs={true}/>}
         </section>

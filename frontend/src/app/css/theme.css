@@ -1,71 +1,40 @@
-/* =======================
-   Tema claro
-======================= */
+/* Tema claro */
 [data-theme="light"] {
-  /* Fondos */
-  --bg-primary: #E6EDF5;      /* Base clara */
-  --bg-secondary: #CEDBE7;    /* Cards y formularios */
-  --bg-tertiary: #D8E3ED;     /* Secciones, listas intermedias */
-  --bg-quaternary: #E0E8F0;   /* Tarjetas ligeras y elementos secundarios */
+    --bg-primary: #F7F9FC;
+    --bg-secondary: #FFFFFF;
 
-  /* Textos */
-  --text-primary: #1F2937;    /* Gris oscuro */
-  --text-secondary: #4B5563;  /* Gris medio */
-  --text-tertiary: #6B7280;   /* Gris suave */
-  --text-quaternary: #94A3B8; /* Gris muy suave */
+    --text-primary: #1F2937;
+    --text-secondary: #6B7280;
 
-  /* Colores de acción */
-  --color-primary: #527BFF;   /* Azul para botones y links */
-  --color-secondary: #6DD1A7; /* Verde para acentos */
+    --color-primary: #4F7FFF;
+    --color-secondary: #6BC2A4;
 
-  /* Bordes */
-  --border-color: #BCCCDC;    /* Gris suave */
+    --border-color: #E5E7EB;
 }
 
-/* =======================
-   Tema oscuro
-======================= */
+/* Tema oscuro */
 [data-theme="dark"] {
-  /* Fondos */
-  --bg-primary: #0F172A;      /* Base oscuro */
-  --bg-secondary: #1A2236;    /* Cards y formularios */
-  --bg-tertiary: #192537;     /* Secciones intermedias */
-  --bg-quaternary: #1E293B;   /* Tarjetas y elementos secundarios */
+    --bg-primary: #0F172A;
+    --bg-secondary: #1E293B;
 
-  /* Textos */
-  --text-primary: #E5E7EB;    /* Gris claro sobre fondo oscuro */
-  --text-secondary: #CBD5E1;  /* Gris medio */
-  --text-tertiary: #94A3B8;   /* Gris suave */
-  --text-quaternary: #7E8AA2; /* Gris más oscuro para subtítulos */
+    --text-primary: #E5E7EB;
+    --text-secondary: #94A3B8;
 
-  /* Colores de acción */
-  --color-primary: #60A5FA;   /* Azul brillante sobre oscuro */
-  --color-secondary: #34D399; /* Verde para acentos */
+    --color-primary: #60A5FA;
+    --color-secondary: #34D399;
 
-  /* Bordes */
-  --border-color: #334155;    /* Gris definido */
+    --border-color: #334155;
 }
 
-/* =======================
-   Tema midnight
-======================= */
 [data-theme="midnight"] {
-  /* Fondos */
-  --bg-primary: #12091F;      /* Base muy oscuro, nocturno */
-  --bg-secondary: #1A0F2E;    /* Cards y formularios ligeramente más claros */
-  --bg-tertiary: #170B28;     /* Secciones intermedias */
-  --bg-quaternary: #1B0F2E;   /* Tarjetas y elementos secundarios */
+    --bg-primary: #12091F;
+    --bg-secondary: #1B0F2E;
 
-  /* Textos */
-  --text-primary: #FFF7ED;    /* Gris muy claro sobre base oscura */
-  --text-secondary: #FCD5B5;  /* Gris cálido */
-  --text-tertiary: #F9D6A0;   /* Gris más suave */
-  --text-quaternary: #F5CFA5; /* Gris claro para subtítulos o info secundaria */
+    --text-primary: #FFF7ED;
+    --text-secondary: #FCD5B5;
 
-  /* Colores de acción */
-  --color-primary: #F97316;   /* Naranja intenso para botones y links */
-  --color-secondary: #F43F5E; /* Rosa/rojo para acentos */
+    --color-primary: #F97316;
+    --color-secondary: #F43F5E;
 
-  /* Bordes */
-  --border-color: #3B1D5A;    /* Gris oscuro profundo */
+    --border-color: #3B1D5A;
 }

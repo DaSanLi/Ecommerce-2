@@ -1,32 +1,20 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
-import { jwtConstants } from '../JWT/constants'
-import { payloadType } from '../scripts/scripts-types';
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { GqlExecutionContext } from '@nestjs/graphql';
+import { AuthCookiesService } from '../scripts/auth-cookies.service'
+import { RequestWithUser } from '../scripts/auth.types'
+
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    constructor(private readonly jwtService: JwtService) { }
+    constructor(private readonly authCookiesService: AuthCookiesService) { }
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
+        const ctx = GqlExecutionContext.create(context);
+        const request = ctx.getContext<{ req: RequestWithUser }>().req;
 
-        const request = context.switchToHttp().getRequest();
-        const token = request?.cookies?.auth_token;
-
-
-        if (!token) {
-            throw new UnauthorizedException("No se ha proporcionado el token");
-        }
-
-        try {
-            const payload: payloadType = await this.jwtService.verifyAsync(token, {
-                secret: jwtConstants.secret,
-            });
-            request.user = payload;
-        } catch {
-            throw new UnauthorizedException("Token no valido");
-        }
+        const payload = await this.authCookiesService.verifyTokenFromCookie(request);
+        this.authCookiesService.attachUserToRequest(request, payload);
 
         return true;
     }
-    
 }

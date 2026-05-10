@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "deltaSpecs": {},
+  "meta": {
+    "created": "2026-03-27T00:00:00Z",
+    "storageType": "json-file",
+    "storagePath": "sdd/persistence/storage.json"
+  }
+}
