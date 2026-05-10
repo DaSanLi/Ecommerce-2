@@ -6,6 +6,13 @@ import { Task } from '../TaskList/types'
 import { useState } from 'react'
 import NewTask from '../NewTask/NewTask'
 
+const priorityColors: Record<string, string> = {
+    baja: 'bg-green-500/20 text-green-400',
+    media: 'bg-yellow-500/20 text-yellow-400',
+    alta: 'bg-orange-500/20 text-orange-400',
+    urgente: 'bg-red-500/20 text-red-400',
+}
+
 interface Props {
     task: Task
     isDragging?: boolean
@@ -23,13 +30,6 @@ export default function KanbanCard({ task, isDragging }: Props) {
 
     async function deleteTask() {
         await handleDeleteTask(task.id)
-    }
-
-    const priorityColors: Record<string, string> = {
-        baja: 'bg-green-500/20 text-green-400',
-        media: 'bg-yellow-500/20 text-yellow-400',
-        alta: 'bg-orange-500/20 text-orange-400',
-        urgente: 'bg-red-500/20 text-red-400',
     }
 
     return (

@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { ME } from '../queries/auth';
 
@@ -20,12 +21,14 @@ export function useCurrentUser() {
     errorPolicy: 'all',
   });
 
-  const user: CurrentUser | null = data?.me ? {
-    id: data.me.id,
-    email: data.me.email,
-    fullName: data.me.fullName,
-    gender: data.me.gender,
-  } : null;
+  const user: CurrentUser | null = useMemo(() => {
+    return data?.me ? {
+      id: data.me.id,
+      email: data.me.email,
+      fullName: data.me.fullName,
+      gender: data.me.gender,
+    } : null;
+  }, [data?.me]);
 
   return { user, loading, error, refetch };
 }

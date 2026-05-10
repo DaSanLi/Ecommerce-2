@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { URLBASE } from '@/src/scripts.ts/scripts';
+import { URLBASE } from '@/src/scripts/scripts';
 
 export async function verifyToken(): Promise<boolean> {
   const cookieStore = await cookies();

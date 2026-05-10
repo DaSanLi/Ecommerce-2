@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ViewTransition } from 'react'
+// import { ViewTransition } from 'react'
 // import { DM_Serif_Text } from "next/font/google";
 import "./css/globals.css";
 import ThemeProvider from "../context/ThemeContext/Theme-provider";
@@ -26,13 +26,13 @@ export default function RootLayout({
       <body
         // className={`${DST.className} antialiased`}
       >
-        <ViewTransition>
+        {/* <ViewTransition> */}
           <ApolloWrapper>
             <ThemeProvider>
                 {children}
             </ThemeProvider>
           </ApolloWrapper>
-        </ViewTransition>
+        {/* </ViewTransition> */}
       </body>
     </html>
   );

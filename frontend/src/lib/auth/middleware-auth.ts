@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { URLBASE } from '@/src/scripts.ts/scripts';
+import { URLBASE } from '@/src/scripts/scripts';
 
 export async function verifyTokenMiddleware(request: NextRequest): Promise<boolean> {
   const token = request.cookies.get('token')?.value;

@@ -1,4 +1,5 @@
 'use client'
+import { useMemo } from 'react'
 import { useDroppable } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { Task, taskStatus } from '../TaskList/types'
@@ -12,6 +13,7 @@ interface Props {
 
 export default function KanbanColumn({ id, title, tasks }: Props) {
     const { setNodeRef, isOver } = useDroppable({ id })
+    const taskIds = useMemo(() => tasks.map((t) => t.id), [tasks]);
 
     return (
         <div
@@ -27,7 +29,7 @@ export default function KanbanColumn({ id, title, tasks }: Props) {
                 </span>
             </header>
             <div className="flex flex-col gap-3 lg:gap-4 min-h-40 sm:min-h-50 lg:min-h-64 overflow-y-auto">
-                <SortableContext items={tasks.map((t) => t.id)} strategy={verticalListSortingStrategy}>
+                <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
                     {tasks.length === 0 ? (
                         <div className="flex items-center justify-center h-20 text-(--text-secondary) text-sm opacity-50">
                             Sin tareas

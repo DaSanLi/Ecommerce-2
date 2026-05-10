@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { redirect } from 'next/navigation';
-import { URLBASE } from '@/src/scripts.ts/scripts';
+import { URLBASE } from '@/src/scripts/scripts';
 
 function verifyTokenWithRetry(): Promise<boolean> {
   return fetch(URLBASE, {

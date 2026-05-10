@@ -16,33 +16,26 @@ function LoginForm() {
             password: e.currentTarget.password.value
         }
         setForm(newForm)
+        handleSubmit(newForm)
     }
 
-    const handleSubmit = async () => {
-        if (form) {
-            try {
-                await handleLogin(form)
-            } catch (err: any) {
-                if (err.graphQLErrors) {
-                    const messages = err.graphQLErrors.map((e: any) => e.message).join(', ')
-                    setError(messages)
-                } else {
-                    setError('Error al iniciar sesión')
-                }
+    const handleSubmit = async (formData: loginForm) => {
+        setError(null)
+        try {
+            await handleLogin(formData)
+        } catch (err: any) {
+            if (err.graphQLErrors) {
+                const messages = err.graphQLErrors.map((e: any) => e.message).join(', ')
+                setError(messages)
+            } else {
+                setError('Error al iniciar sesión')
             }
         }
     }
 
-    if (form) {
-        handleSubmit()
-    }
-
     return (
         <form className="space-y-4"
-            onSubmit={(e) => {
-                saveForm(e)
-                setTimeout(() => {}, 100)
-            }}
+            onSubmit={(e) => saveForm(e)}
         >
             {error !== null && (
                 <p className="text-white bg-red-800 rounded-2xl p-2 text-sm text-center">
