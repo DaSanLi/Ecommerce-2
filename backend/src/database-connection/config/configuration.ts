@@ -6,8 +6,8 @@ export default () => ({
         username: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
-        entities: ['dist/**/*.entity.js'],
-        migrations: ['dist/database-connection/database/migrations/*.js'],
+        entities: ['src/**/*.entity.js'],
+        migrations: ['src/database-connection/database/migrations/*.js'],
         synchronize: false,
     }
 });

@@ -14,7 +14,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         ...configService.get('database'),
-        synchronize: true,
+        // synchronize: true,
       }),
       inject: [ConfigService],
     })

@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsString,  MinLength, MaxLength, IsNotEmpty } from 'class-validator';
+import { IsString,  MinLength, MaxLength, IsNotEmpty, IsEnum, IsEmail } from 'class-validator';
 import { gender } from '../scripts/types';
 
 @InputType({ description: "El campo username y password son obligatorios proporcionarlos para crear un nuevo usuario"})
@@ -7,8 +7,7 @@ export class CreateUserDto {
 
     @Field()
     @IsString()
-    @MinLength(5)
-    @MaxLength(50)
+    @IsEmail()
     @IsNotEmpty()
     email!: string;
 
@@ -20,12 +19,13 @@ export class CreateUserDto {
     fullName!: string;
 
     @Field()
-    @MinLength(1)
     @IsNotEmpty()
     @IsString()
+    @MinLength(6)
     password!: string;
 
     @Field()
+    @IsEnum(gender)
     gender!: gender;
 
 }
