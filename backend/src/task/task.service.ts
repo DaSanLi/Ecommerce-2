@@ -28,7 +28,12 @@ export class TaskService {
       throw new NotFoundException('El usuario no esta registrado o fue eliminado.');
     }
     
-    const newTask = { ...createTaskDto, user: user };
+    const newTask = { 
+      ...createTaskDto, 
+      status: createTaskDto.status ?? taskStatus.pendiente,
+      orderInStatus: createTaskDto.orderInStatus ?? 0,
+      user: user 
+    };
     
     try {
       await this.TaskRepository.save(newTask);

@@ -32,10 +32,6 @@ export class User {
     deletedAt?: Date|null;
 
     @OneToMany(() => Task, (task) => task.user, { eager: true })
-    //si por seguridad no se quisiera que los usuarios vieran tasks ajenas de otros usuarios 
-    // se comentará la siguiente linea de codigo obligando a cada usuario a resguardar sus tareas 
-    //sin que nadie pueda verlas a menos que realice un login y se envie un token en cada petición a todas las
-    //rutas relacionados con la entidad Task.
     @Field(() => [Task], { nullable: true, description: "Muestra todas las tasks de todos los usuarios creados y sus campos" })
     tasks?: Task[];
 }
