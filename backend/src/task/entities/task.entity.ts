@@ -20,7 +20,7 @@ export class Task {
         title!: string;
 
         @Column()
-        @Field({ description: "Prioridad de la tarea (baja, media, alta o urgente)"})
+        @Field(() => String, { description: "Prioridad de la tarea (baja, media, alta o urgente)"})
         priority!: priorityState;
 
         @Column({ type: 'varchar' })

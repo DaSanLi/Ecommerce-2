@@ -1,4 +1,4 @@
-import { IsString,  MinLength, MaxLength, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsString,  MinLength, MaxLength, IsNotEmpty, IsEnum, IsOptional } from 'class-validator';
 import { priorityState, taskStatus } from '../scripts/task.types'
 import { Field, InputType, Int } from '@nestjs/graphql';
 
@@ -23,9 +23,11 @@ export class CreateTaskDto {
     description?: string;
     
     @Field(() => String, { description: "Estado de la tarea en el tablero Kanban" })
+    @IsOptional()
     status: taskStatus = taskStatus.pendiente;
 
     @Field(() => Int, { description: "Orden de la tarea dentro de su estado" })
+    @IsOptional()
     orderInStatus: number = 0;
 
 }

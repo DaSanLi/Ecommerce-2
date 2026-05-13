@@ -6,6 +6,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import type { ResponseWithCookie } from '../auth/scripts/auth.types';
 
+// ─── Importar registros de enums para que se ejecuten en startup ───
+import '../graphql/enums/task-status.enum';
+import '../graphql/enums/gender.enum';
+import '../graphql/enums/priority-state.enum';
+
  @Module({
     imports: [
         GraphQLModule.forRoot<ApolloDriverConfig>({

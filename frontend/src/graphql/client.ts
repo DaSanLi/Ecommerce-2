@@ -1,4 +1,4 @@
-import { ApolloClient, InMemoryCache, HttpLink, from } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, from, Observable } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { redirect } from 'next/navigation';
@@ -41,12 +41,24 @@ const authLink = onError(({ error, operation, forward }) => {
   });
 
   if (authErrors.length > 0) {
-    verifyTokenWithRetry().then((isValid) => {
-      if (!isValid) {
-        redirect('/auth/login');
-        return;
-      }
-      return forward(operation);
+    return new Observable(observer => {
+      verifyTokenWithRetry()
+        .then(isValid => {
+          if (isValid) {
+            forward(operation).subscribe({
+              next: observer.next.bind(observer),
+              error: observer.error.bind(observer),
+              complete: observer.complete.bind(observer),
+            });
+          } else {
+            observer.complete();
+            redirect('/auth/login');
+          }
+        })
+        .catch(() => {
+          observer.complete();
+          redirect('/auth/login');
+        });
     });
   }
 });
