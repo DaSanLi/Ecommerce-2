@@ -46,7 +46,7 @@ services:
     command: ["npm", "run", "start:dev"]
 
 
-# # actualmente no hay soporte para este contenedor 
+# currently no support for this frontend container 
 #   todo-frontend:
 #     build:
 #       context: ./frontend

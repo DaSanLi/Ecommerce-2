@@ -1,8 +1,8 @@
-# ToDo App - Documentación Técnica
+# ToDo App - Technical Documentation
 
-## 1. Flujo de Datos del Sistema de Autenticación
+## 1. Authentication System Data Flow
 
-### 1.1 Diagrama de Flujo
+### 1.1 Flow Diagram
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
@@ -10,100 +10,100 @@
 │   (Next.js) │     │     API     │     │  (NestJS)   │     │             │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
        │                   │                   │                   │
-       │ Mutation          │ Query/Mutation    │ Lógica de         │
-       │ Login/Register    │ validate          │ negocio           │
+       │ Mutation          │ Query/Mutation    │ Business          │
+       │ Login/Register    │ validate          │ logic             │
        │                   │                   │                   │
        ▼                   ▼                   ▼                   ▼
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│  Interfaz   │     │   Schema    │     │ AuthService │     │   TypeORM   │
-│   Usuario   │     │   Types     │     │             │     │  Repository │
+│    User     │     │   Schema    │     │ AuthService │     │   TypeORM   │
+│  Interface  │     │   Types     │     │             │     │  Repository │
 └─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
 ```
 
-### 1.2 Flujo de Registro (Register)
+### 1.2 Registration Flow (Register)
 
 ```
-1. Usuario completa formulario (email, password, fullName, gender)
+1. User fills out form (email, password, fullName, gender)
          │
          ▼
 2. Frontend: mutation register → GraphQL API
          │
          ▼
-3. AuthResolver: recibe CreateUserDto
+3. AuthResolver: receives CreateUserDto
          │
          ▼
 4. AuthService.registerUser():
-   a) Verifica si email ya existe (busca con soft delete)
-   b) Si existe → throw BadRequestException
-   c) Si no existe → hashPassword(body.password)
-   d) Guardar usuario en DB
-   e) Generar JWT con payload { email }
+   a) Check if email already exists (searches with soft delete)
+   b) If exists → throw BadRequestException
+   c) If not → hashPassword(body.password)
+   d) Save user to DB
+    e) Generate JWT with payload { email }
          │
          ▼
-5. AuthCookiesService.setTokenCookie() → establece cookie "token"
+5. AuthCookiesService.setTokenCookie() → sets "token" cookie
          │
          ▼
-6. Retorna { email } al frontend
+6. Returns { email } to frontend
 ```
 
-### 1.3 Flujo de Login
+### 1.3 Login Flow
 
 ```
-1. Usuario ingresa email y password
+1. User enters email and password
          │
          ▼
 2. Frontend: mutation login → GraphQL API
          │
          ▼
-3. AuthResolver: recibe LoginDto
+3. AuthResolver: receives LoginDto
          │
          ▼
 4. AuthService.loginUser():
-   a) Buscar usuario por email (deletedAt: null)
-   b) Si no existe → throw BadRequestException
-   c) Verificar contraseña con verifyHashPassword()
-   d) Si no coincide → throw BadRequestException
-   e) Generar JWT con payload { email }
+   a) Find user by email (deletedAt: null)
+   b) If not found → throw BadRequestException
+   c) Verify password with verifyHashPassword()
+   d) If no match → throw BadRequestException
+    e) Generate JWT with payload { email }
          │
          ▼
-5. AuthCookiesService.setTokenCookie() → establece cookie "token"
+5. AuthCookiesService.setTokenCookie() → sets "token" cookie
          │
          ▼
-6. Retorna { email, token } al frontend
+6. Returns { email, token } to frontend
 ```
 
-### 1.4 Flujo de Verificación (Verification)
+### 1.4 Verification Flow
 
 ```
-1. App carga → consulta verification query
+1. App loads → queries verification query
          │
          ▼
 2. Frontend: query verification → GraphQL API
          │
          ▼
 3. AuthResolver.verification():
-   a) Extrae cookies del request
+   a) Extracts cookies from request
    b) AuthCookiesService.verifyTokenFromCookie()
-   c) Decodifica JWT
-   d) Busca usuario en DB
-   e) Genera nuevo JWT (refresh)
-   f) Actualiza cookie
+   c) Decodes JWT
+   d) Finds user in DB
+   e) Generates new JWT (refresh)
+   f) Updates cookie
          │
          ▼
-7. Retorna { email, message }
+7. Returns { email, message } to frontend
 ```
 
-### 1.5 Protección de Rutas
+### 1.5 Route Protection
 
-- **AuthGuard**: Verifica que el token JWT sea válido
-- Las queries/mutations de Tasks solo son accesibles con token válido
-- El token se envía en cookies (httponly, secure)
+- **AuthGuard**: Validates that the JWT token is valid
+- Task queries/mutations are only accessible with a valid token
+- Token is sent via cookies (httponly, secure)
 
 ---
 
-## 2. Modelo de Datos (UML)
+## 2. Data Model (UML)
 
-### 2.1 Diagrama de Entidades
+### 2.1 Entity Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -135,10 +135,10 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### 2.2 Detalle de Campos
+### 2.2 Field Details
 
 #### User
-| Campo | Tipo | Restricciones |
+| Field | Type | Constraints |
 |-------|------|---------------|
 | id | UUID/INT | Primary Key, Auto-increment |
 | email | VARCHAR(50) | Unique, Not Null |
@@ -148,7 +148,7 @@
 | deletedAt | DATETIME | Nullable (soft delete) |
 
 #### Task
-| Campo | Tipo | Restricciones |
+| Field | Type | Constraints |
 |-------|------|---------------|
 | id | UUID/INT | Primary Key, Auto-increment |
 | title | VARCHAR | Not Null |
@@ -157,7 +157,7 @@
 | deletedAt | DATETIME | Nullable (soft delete) |
 | userId | INT | Foreign Key → User.id, Not Null |
 
-### 2.3 Relaciones
+### 2.3 Relationships
 
 ```
 User  ──────────────  Task
@@ -169,15 +169,15 @@ User  ──────────────  Task
    │   (ManyToOne)     │
    └────────────────────┘
    
-   - Un User puede tener muchas Tasks (1:N)
-   - Una Task pertenece a un único User
-   - ON DELETE CASCADE: al eliminar User, se eliminan sus Tasks
+   - A User can have many Tasks (1:N)
+   - A Task belongs to a single User
+   - ON DELETE CASCADE: deleting a User removes their Tasks
 ```
 
-### 2.4 Tablas en Base de Datos
+### 2.4 Database Tables
 
 ```sql
--- Tabla users
+-- users table
 CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(50) UNIQUE NOT NULL,
@@ -187,7 +187,7 @@ CREATE TABLE users (
     deletedAt DATETIME NULL
 );
 
--- Tabla tasks
+-- tasks table
 CREATE TABLE tasks (
     id INT PRIMARY KEY AUTO_INCREMENT,
     title VARCHAR NOT NULL,
@@ -201,65 +201,65 @@ CREATE TABLE tasks (
 
 ---
 
-## 3. Endpoints GraphQL
+## 3. GraphQL Endpoints
 
-### 3.1 Módulo de Autenticación (AuthResolver)
+### 3.1 Authentication Module (AuthResolver)
 
-| Operación | Tipo | Descripción |
+| Operation | Type | Description |
 |-----------|------|-------------|
-| `register` | Mutation | Registra un nuevo usuario y retorna token |
-| `login` | Mutation | Autentica usuario y retorna token |
-| `verification` | Query | Verifica y renueva el token |
-| `me` | Query | Obtiene el usuario actual autenticado |
-| `logout` | Mutation | Cierra sesión y limpia cookie |
+| `register` | Mutation | Registers a new user and returns token |
+| `login` | Mutation | Authenticates user and returns token |
+| `verification` | Query | Verifies and renews the token |
+| `me` | Query | Gets the currently authenticated user |
+| `logout` | Mutation | Logs out and clears the cookie |
 
-> **Nota**: La creación de usuarios solo está disponible a través del módulo de autenticación (`auth`). El módulo `users` solo permite consultas y actualizaciones.
+> **Note**: User creation is only available through the authentication module (`auth`). The `users` module only allows queries and updates.
 
-### 3.2 Módulo de Usuarios (UsersResolver)
+### 3.2 Users Module (UsersResolver)
 
-| Operación | Tipo | Descripción |
+| Operation | Type | Description |
 |-----------|------|-------------|
-| `findAllUsers` | Query | Lista todos los usuarios |
-| `findOneUser` | Query | Obtiene un usuario por ID |
-| `updateUser` | Mutation | Actualiza un usuario existente |
-| `softDeleteUSer` | Mutation | Borrado suave de usuario |
-| `cancelSoftDelete` | Mutation | Restaura usuario borrado suavemente |
-| `hardDeleteUser` | Mutation | Borrado permanente de usuario |
+| `findAllUsers` | Query | Lists all users |
+| `findOneUser` | Query | Gets a user by ID |
+| `updateUser` | Mutation | Updates an existing user |
+| `softDeleteUSer` | Mutation | Soft deletes a user |
+| `cancelSoftDelete` | Mutation | Restores a soft-deleted user |
+| `hardDeleteUser` | Mutation | Permanently deletes a user |
 
 ---
 
-## Tecnologías Utilizadas
+## Technologies Used
 
 ### Backend
-- **NestJS** - Framework de Node.js
-- **TypeORM** - ORM para gestión de base de datos
-- **GraphQL** - API con Apollo Server
-- **JWT** - Autenticación con tokens
-- **Bcrypt** - Hash de contraseñas
+- **NestJS** - Node.js framework
+- **TypeORM** - ORM for database management
+- **GraphQL** - API with Apollo Server
+- **JWT** - Token-based authentication
+- **Bcrypt** - Password hashing
 
 ### Frontend
-- **Next.js** - Framework de React
-- **Apollo Client** - Cliente GraphQL
-- **GraphQL Codegen** - Generación de tipos
+- **Next.js** - React framework
+- **Apollo Client** - GraphQL client
+- **GraphQL Codegen** - Type generation
 
 ---
 
-## Imágenes de la Aplicación
+## Application Screenshots
 
-### Pantalla de Login
+### Login Screen
 ![Login](./images/image1.png)
 
-### Dashboard con Kanban
+### Dashboard with Kanban
 ![Dashboard](./images/image2.png)
 
-### Apartado de ajustes
-![Tasks](./images/image3.png)
+### Settings Section
+![Settings](./images/image3.png)
 
 ---
 
-## Notas
+## Notes
 
-- La aplicación implementa **soft delete** en ambas entidades
-- Las contraseñas se almacenan hasheadas con bcrypt
-- El token JWT se transmite via cookiesHttpOnly por seguridad
-- Las tareas están asociadas a usuarios y se eliminan en cascada
+- The application implements **soft delete** on both entities
+- Passwords are stored hashed with bcrypt
+- JWT token is transmitted via HttpOnly cookies for security
+- Tasks are associated with users and cascade-deleted

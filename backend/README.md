@@ -1,4 +1,4 @@
-IMPORTANTE: para el correcto funcionamiento del api se debe crear un .env (actualmente lo tengo establecido en la raiz del proyecto) con los siguientes parametros de tu db. Mientras que secret es la palabra secreta utilizada para firmar los tokens de JWT
+IMPORTANT: for the API to work correctly, a `.env` file must be created (currently located at the project root) with the following database parameters. The `secret` field is the secret key used to sign JWT tokens.
 
 DB_HOST=
 DB_PORT=
@@ -11,12 +11,12 @@ secret=
 
 Endpoints =>
 
-(Se utiliza para crear, actualizar, eliminar de manera blanda a usuarios y tareas)
+(GraphQL endpoint — used to create, update, and soft-delete users and tasks)
 /graphql
 
-(Se utilizará REST API para el borrado duro del usuario, utilizando el metodo delete. 
-Se pasa por parametros el id del usuario)
-/users/hardDelete/id del usuario 
+(REST API endpoint for hard-deleting a user using the DELETE method.
+The user ID is passed as a URL parameter)
+/users/hardDelete/{userId}
 
 
 
